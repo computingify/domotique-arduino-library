@@ -1,32 +1,40 @@
-#include "include/AnalogInputFilterd.h"
+#include "AnalogInputFiltered.h"
 #include "arduino.h"
 
-AnalogInputFilterd::AnalogInputFilterd(int pin):
+AnalogInputFiltered::AnalogInputFiltered(int pin) :
   mPin(pin),
-  mValue(0),
   mNumberOfDataBuffered(0),
   mIndex(0)
-{}
-  
-int AnalogInputFilterd::Get() {
+{
+  for (int i = 0; i < mNumberOfDataBuffered; i++) {
+    mValue[i] = 0;
+  }
+}
+
+int AnalogInputFiltered::Get() {
   int total(0);
-  
-  for(int i = 0; i < mNumberOfDataBuffered; i++) {
+
+  for (int i = 0; i < mNumberOfDataBuffered; i++) {
     total += mValue[i];
   }
-  
-  return std::static_cast<int>(total / mNumberOfDataBuffered);
+
+  return static_cast<int>(total / mNumberOfDataBuffered);
 }
-  
-void AnalogInputFilterd::Run(){
-  
+
+void AnalogInputFiltered::Run() {
+
   mValue[mIndex] = analogRead(mPin);
+  Serial.print("Read Lux value [");
+  Serial.print(mValue[mIndex]);
+  Serial.print("] at Index [");
+  Serial.println(mIndex);
+
   mIndex++;
-  if(NUMBER_VALUE_AVERAGE <= mIndex) {
+  if (NUMBER_VALUE_AVERAGE <= mIndex) {
     mIndex = 0;
-  } 
-  
-  if(NUMBER_VALUE_AVERAGE > mNumberOfDataBuffered) {
+  }
+
+  if (NUMBER_VALUE_AVERAGE > mNumberOfDataBuffered) {
     mNumberOfDataBuffered++;
   }
 }

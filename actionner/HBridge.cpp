@@ -1,16 +1,16 @@
-#include "include/Actionner.h"
 #include "arduino.h"
+#include "HBridge.h"
 
-Actionner::Actionner(int pin):
+HBridge::HBridge(int pin) :
   mPin(pin)
 {
   pinMode(mPin, OUTPUT);
-} 
-  
-void Actionner::Enable() {
+}
+
+void HBridge::Enable() {
   digitalWrite(mPin, HIGH);
 }
-  
-void Actionner::Disable(){
+
+void HBridge::Disable() {
   digitalWrite(mPin, LOW);
 }

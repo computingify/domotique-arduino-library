@@ -1,17 +1,19 @@
-#ifndef ACTIONNER_HEADER
-#define ACTIONNER_HEADER
+#ifndef HBRIDGE_H
+#define HBRIDGE_H
 
 
-class Actionner{
+class HBridge {
 
 public:
-  Actionner(int pin);
+  HBridge(int pin);
 
   void Enable();
 
   void Disable();
-  
+
 protected:
   int mPin;
 
 };
+
+#endif
