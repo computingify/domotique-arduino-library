@@ -12,28 +12,29 @@ AnalogInputFiltered::AnalogInputFiltered(int pin) :
 }
 
 int AnalogInputFiltered::Get() {
-  int total(0);
+  unsigned long total(0);
+  int result(0);
 
   for (int i = 0; i < mNumberOfDataBuffered; i++) {
     total += mValue[i];
   }
 
-  return static_cast<int>(total / mNumberOfDataBuffered);
+  if (0 != total && 0 != mNumberOfDataBuffered) {
+    result = static_cast<int>(total / mNumberOfDataBuffered);
+  }
+  return result;
 }
 
 void AnalogInputFiltered::Run() {
 
   mValue[mIndex] = analogRead(mPin);
-  Serial.print("Read Lux value [");
-  Serial.print(mValue[mIndex]);
-  Serial.print("] at Index [");
-  Serial.println(mIndex);
 
   mIndex++;
   if (NUMBER_VALUE_AVERAGE <= mIndex) {
     mIndex = 0;
   }
 
+  // Useful for the startup until all the buffer is filled
   if (NUMBER_VALUE_AVERAGE > mNumberOfDataBuffered) {
     mNumberOfDataBuffered++;
   }
