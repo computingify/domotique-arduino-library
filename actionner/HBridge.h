@@ -23,6 +23,8 @@ public:
 
   void Close();
 
+  void Stop();
+
   eDoorState GetState();
 
   bool isProcessFinish();

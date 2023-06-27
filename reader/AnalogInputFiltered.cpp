@@ -6,7 +6,7 @@ AnalogInputFiltered::AnalogInputFiltered(int pin) :
   mNumberOfDataBuffered(0),
   mIndex(0)
 {
-  for (int i = 0; i < mNumberOfDataBuffered; i++) {
+  for (int i = 0; i < NUMBER_VALUE_AVERAGE; i++) {
     mValue[i] = 0;
   }
 }
@@ -21,6 +21,10 @@ int AnalogInputFiltered::Get() {
 
   if (0 != total && 0 != mNumberOfDataBuffered) {
     result = static_cast<int>(total / mNumberOfDataBuffered);
+  }
+
+  if (0 == total) {
+    result = 0;
   }
   return result;
 }

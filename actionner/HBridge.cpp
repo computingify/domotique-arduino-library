@@ -25,6 +25,10 @@ void HBridge::Close() {
   manageDoor(eClose);
 }
 
+void HBridge::Stop() {
+  manageDoor(eStop);
+}
+
 eDoorState HBridge::GetState() {
   return mDoorState;
 }
