@@ -9,8 +9,14 @@ DigitalOutput::DigitalOutput(int pin) :
 
 void DigitalOutput::Enable() {
   digitalWrite(mPin, HIGH);
+  mState = eActive;
 }
 
 void DigitalOutput::Disable() {
   digitalWrite(mPin, LOW);
+  mState = eInactive;
+}
+
+eDigitalOutputState DigitalOutput::GetState() {
+  return mState;
 }

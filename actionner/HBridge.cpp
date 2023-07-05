@@ -15,6 +15,13 @@ HBridge::HBridge(int in1,
   pinMode(mIn2, OUTPUT);
   pinMode(mSwitchLimitOpen, INPUT);
   pinMode(mSwitchLimitClose, INPUT);
+
+  if (IsAtSwitchLimitOpen()) {
+    mDoorState = eOpened;
+  }
+  else if (IsAtSwitchLimitClose()) {
+    mDoorState = eClosed;
+  }
 }
 
 void HBridge::Open() {
