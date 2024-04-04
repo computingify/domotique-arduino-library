@@ -11,7 +11,7 @@ class DigitalOutput {
 public:
   DigitalOutput(int pin);
 
-  void Enable();
+  virtual void Enable();
 
   void Disable();
 
