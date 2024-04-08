@@ -2,11 +2,11 @@
 #define H_BRIDGE_H
 
 typedef enum {
-  eOpenning = 0,
-  eOpened,
-  eClosing,
-  eClosed,
-  eUnknown,
+  eOpenning = 0,  // 0
+  eOpened,        // 1
+  eClosing,       // 2
+  eClosed,        // 3
+  eUnknown,       // 4
 }eDoorState;
 
 class HBridge {

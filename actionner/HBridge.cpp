@@ -13,8 +13,8 @@ HBridge::HBridge(int in1,
 {
   pinMode(mIn1, OUTPUT);
   pinMode(mIn2, OUTPUT);
-  pinMode(mSwitchLimitOpen, INPUT);
-  pinMode(mSwitchLimitClose, INPUT);
+  pinMode(mSwitchLimitOpen, INPUT_PULLUP);
+  pinMode(mSwitchLimitClose, INPUT_PULLUP);
 
   if (IsAtSwitchLimitOpen()) {
     mDoorState = eOpened;
@@ -42,6 +42,8 @@ eDoorState HBridge::GetState() {
 
 bool HBridge::isProcessFinish() {
   bool isFinish(false);
+  Serial.println("CHECK");
+
   switch (mDoorState) {
   case eOpenning:
     if (IsAtSwitchLimitOpen()) {
@@ -69,7 +71,8 @@ bool HBridge::isProcessFinish() {
 void HBridge::manageDoor(eDoorRequest requestedState) {
   switch (requestedState) {
   case eOpen:
-    if (!IsAtSwitchLimitOpen()) {
+    if (!IsAtSwitchLimitOpen()
+      && eOpenning != mDoorState) {
       Serial.println("Door Openning");
       digitalWrite(mIn1, HIGH);
       digitalWrite(mIn2, LOW);
@@ -77,7 +80,8 @@ void HBridge::manageDoor(eDoorRequest requestedState) {
     }
     break;
   case eClose:
-    if (!IsAtSwitchLimitClose()) {
+    if (!IsAtSwitchLimitClose()
+      && eClosing != mDoorState) {
       Serial.println("Door Closing");
       digitalWrite(mIn1, LOW);
       digitalWrite(mIn2, HIGH);
@@ -95,7 +99,8 @@ void HBridge::manageDoor(eDoorRequest requestedState) {
 bool HBridge::IsAtSwitchLimitOpen() {
   bool isOnSwitchLimitOpen(false);
 
-  if (LOW == digitalRead(mSwitchLimitOpen)) {
+  if (LOW == digitalRead(mSwitchLimitOpen)
+      && LOW == digitalRead(mSwitchLimitClose)) {
     Serial.println("LIMIT OPEN");
     isOnSwitchLimitOpen = true;
   }
@@ -106,7 +111,8 @@ bool HBridge::IsAtSwitchLimitOpen() {
 bool HBridge::IsAtSwitchLimitClose() {
   bool isOnSwitchLimitClose(false);
 
-  if (HIGH == digitalRead(mSwitchLimitClose)) {
+  if (HIGH == digitalRead(mSwitchLimitOpen)
+      && HIGH == digitalRead(mSwitchLimitClose)) {
     Serial.println("LIMIT CLOSE");
     isOnSwitchLimitClose = true;
   }

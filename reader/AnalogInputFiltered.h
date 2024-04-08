@@ -1,7 +1,7 @@
 #ifndef ANALOG_INPUT_FILTERED_H
 #define ANALOG_INPUT_FILTERED_H
 
-#define NUMBER_VALUE_AVERAGE 5
+#define NUMBER_VALUE_AVERAGE 2
 
 class AnalogInputFiltered {
 
