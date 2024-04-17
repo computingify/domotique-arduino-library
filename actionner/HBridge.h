@@ -27,7 +27,7 @@ public:
 
   eDoorState GetState();
 
-  bool isProcessFinish();
+  bool run();
 
 protected:
 

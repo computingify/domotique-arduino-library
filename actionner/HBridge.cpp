@@ -40,31 +40,32 @@ eDoorState HBridge::GetState() {
   return mDoorState;
 }
 
-bool HBridge::isProcessFinish() {
-  bool isFinish(false);
+bool HBridge::run() {
+  eDoorState previousState(mDoorState);
 
   switch (mDoorState) {
   case eOpenning:
     if (IsAtSwitchLimitOpen()) {
       manageDoor(eStop);
       mDoorState = eOpened;
-      isFinish = true;
     }
     break;
   case eClosing:
     if (IsAtSwitchLimitClose()) {
       manageDoor(eStop);
       mDoorState = eClosed;
-      isFinish = true;
     }
+    break;
+  case eOpened:
+  case eClosed:
     break;
   default:
     manageDoor(eStop);
     mDoorState = eUnknown;
-    isFinish = true;
     break;
   }
-  return isFinish;
+
+  return mDoorState != previousState;
 }
 
 void HBridge::manageDoor(eDoorRequest requestedState) {
@@ -86,6 +87,11 @@ void HBridge::manageDoor(eDoorRequest requestedState) {
       digitalWrite(mIn2, HIGH);
       mDoorState = eClosing;
     }
+    break;
+  case eStop:
+    Serial.println("Door Stop");
+    digitalWrite(mIn1, LOW);
+    digitalWrite(mIn2, LOW);
     break;
   default:
     Serial.println("Door Stop");
